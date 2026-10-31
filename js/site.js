@@ -159,29 +159,48 @@
     gsap.to(p,{x,y,scale:1.12,rotation:gsap.utils.random(-3,3),duration:.5,ease:'back.out(1.6)'});
   }
   const SLOTS=[[.02,.05],[.17,.44],[.01,.58],[.67,.03],[.83,.34],[.69,.58],[.25,.02]];
-  onOpen.photos=(panel,o)=>{
-    const pick=gsap.utils.shuffle(PH.slice()).slice(0,7);
-    pile.innerHTML=pick.map((p,i)=>`<button class="pol" aria-label="Фото"><img src="${p.src}" alt="" onerror="this.style.visibility='hidden'"><span>${words[i%words.length]}</span></button>`).join('');
+  const rs=$('#reshuffle'); let pO=null, lastPick=[], reBusy=false;
+  function pickPhotos(){ // каждый раз другие 7 фото в случайном порядке
+    const pool=PH.filter(p=>!lastPick.includes(p.src)), src=pool.length>=7?pool:PH.slice();
+    const pick=gsap.utils.shuffle(src.slice()).slice(0,7); lastPick=pick.map(p=>p.src); return pick;
+  }
+  function pGeom(){
+    const W=pile.clientWidth,H=pile.clientHeight,pw=Math.round(gsap.utils.clamp(120,240,Math.min(W*.16,(H-60)/1.6)));
+    const ph=pw/.9+45, pr=pile.getBoundingClientRect();
+    return {W,H,pw,ph,ox:pO.x-pr.left-pw/2,oy:pO.y-pr.top-ph/2};
+  }
+  function scatter(){
+    const pick=pickPhotos();
+    pile.innerHTML=pick.map((p,i)=>`<button class="pol" aria-label="Фото"><img src="${p.src}" alt="" onerror="this.style.visibility='hidden'"><span>${words[gsap.utils.random(0,words.length-1,1)]}</span></button>`).join('');
     pols=[...pile.querySelectorAll('.pol')];
     pols.forEach(p=>p.addEventListener('click',()=>{ window.SFX&&SFX.click(.35); front(p); }));
-    gsap.set(pols,{opacity:0});
-    later=gsap.delayedCall(.95,()=>{
-      later=null;
-      const W=pile.clientWidth,H=pile.clientHeight,pw=Math.round(gsap.utils.clamp(120,240,Math.min(W*.16,(H-60)/1.6)));
-      pile.style.setProperty('--pw',pw+'px');
-      const ph=pw/.9+45, pr=pile.getBoundingClientRect();
-      const ox=o.x-pr.left-pw/2, oy=o.y-pr.top-ph/2;
-      active=null; topZ=10;
-      const sl=gsap.utils.shuffle(SLOTS.slice());
-      pols.forEach((p,i)=>{
-        const rot=gsap.utils.random(-16,16); p.dataset.rot=rot; p.style.zIndex=++topZ;
-        const m=pw*.2, x=gsap.utils.clamp(m,W-pw-m,(sl[i][0]+gsap.utils.random(-.03,.03))*W), y=gsap.utils.clamp(m,H-ph-m,(sl[i][1]+gsap.utils.random(-.03,.03))*H);
-        gsap.fromTo(p,{x:ox,y:oy,rotation:0,scale:.35,opacity:0},{x,y,rotation:rot,scale:1,opacity:1,duration:gsap.utils.random(.8,1.1),delay:i*.06,ease:'power3.out'});
-        gsap.delayedCall(i*.06,()=>window.SFX&&SFX.whoosh(.5,.12));
-      });
+    const {W,H,pw,ph,ox,oy}=pGeom(); pile.style.setProperty('--pw',pw+'px');
+    active=null; topZ=10;
+    const sl=gsap.utils.shuffle(SLOTS.slice()); // раскладка по слотам вокруг постера + случайные отклонения
+    pols.forEach((p,i)=>{
+      const rot=gsap.utils.random(-16,16); p.dataset.rot=rot; p.style.zIndex=++topZ;
+      const m=pw*.2, x=gsap.utils.clamp(m,W-pw-m,(sl[i][0]+gsap.utils.random(-.04,.04))*W), y=gsap.utils.clamp(m,H-ph-m,(sl[i][1]+gsap.utils.random(-.04,.04))*H);
+      gsap.fromTo(p,{x:ox,y:oy,rotation:0,scale:.35,opacity:0},{x,y,rotation:rot,scale:1,opacity:1,duration:gsap.utils.random(.8,1.1),delay:i*.06,ease:'power3.out'});
+      gsap.delayedCall(i*.06,()=>window.SFX&&SFX.whoosh(.5,.12));
     });
+  }
+  function placeRs(panel){ // кнопка «обновить» — над постером
+    const w=wrapOf('photos'), h=w.offsetHeight*(mob()?MOB:CFG).photos[2], pr=panel.getBoundingClientRect();
+    gsap.set(rs,{left:pO.x-pr.left-rs.offsetWidth/2,top:pO.y-h/2-pr.top-rs.offsetHeight-22});
+    gsap.fromTo(rs,{autoAlpha:0,y:10},{autoAlpha:1,y:0,duration:.5,ease:'power3.out'});
+  }
+  onOpen.photos=(panel,o)=>{
+    pO=o; pile.innerHTML=''; pols=[]; gsap.set(rs,{autoAlpha:0});
+    later=gsap.delayedCall(.95,()=>{ later=null; scatter(); placeRs(panel); });
   };
-  onClose.photos=()=>gsap.to(pols,{opacity:0,scale:.6,duration:.3,stagger:.01});
+  rs.addEventListener('click',()=>{
+    if(reBusy||!pols.length) return; reBusy=true; window.SFX&&SFX.click(.45);
+    gsap.fromTo(rs.querySelector('svg'),{rotation:0},{rotation:360,duration:.9,ease:'power2.inOut'});
+    const {ox,oy}=pGeom(); window.SFX&&SFX.whoosh(.6,.2);
+    gsap.to(pols,{x:ox,y:oy,rotation:0,scale:.35,opacity:0,duration:.45,stagger:.03,ease:'power2.in'});
+    gsap.delayedCall(.45+.03*pols.length,()=>{ scatter(); reBusy=false; });
+  });
+  onClose.photos=()=>{ gsap.to(pols,{opacity:0,scale:.6,duration:.3,stagger:.01}); gsap.to(rs,{autoAlpha:0,duration:.2}); };
 
   /* видео: 6 роликов, клик — плеер раскрывается на весь блок */
   const vg=$('#vgrid'), vb=$('#vbig'); let vCur=null, vList=[];

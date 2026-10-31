@@ -491,3 +491,24 @@ nav.top .mark{width:46px;height:54px}
   /* наушники на главной выше — подсказка не прячется под бегущую строку */
   .w-phones{bottom:calc(3% + var(--mq) + var(--k)*4.5)}
 }
+
+/* ===== 31.10: подпись постера снизу слева, подсказка правее; кнопка «обновить»; био — фото с мыльницы ===== */
+@media (min-width:761px){
+  .w-poster .lbl{top:calc(100% + 6px);bottom:auto;left:0;right:auto;transform:none;text-align:left}
+  .w-poster .peek{left:52%;top:calc(100% + 14px);transform:translate(0,-70%) rotate(-2deg)}
+  .w-poster .item:hover .peek,.w-poster .item:focus-visible .peek{transform:translate(0,0) rotate(-2deg)}
+}
+.reshuffle{position:absolute;z-index:6;left:0;top:0;width:48px;height:48px;border-radius:50%;cursor:pointer;pointer-events:auto;opacity:0;visibility:hidden;
+  display:grid;place-items:center;color:var(--orange);
+  background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.08));backdrop-filter:blur(8px) brightness(.92);-webkit-backdrop-filter:blur(8px) brightness(.92);
+  border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 6px 18px rgba(40,25,10,.14);transition:transform .3s}
+.reshuffle svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.reshuffle:hover{transform:scale(1.08)}
+.reshuffle:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.bio-photo{border-radius:14px;transform:rotate(-1.5deg);box-shadow:0 18px 34px rgba(40,25,10,.26),0 2px 4px rgba(40,25,10,.12)}
+.bio-photo::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(125deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 38%),radial-gradient(ellipse at 50% 120%,rgba(0,0,0,.18),transparent 60%)}
+.bio-photo img{filter:saturate(1.08) contrast(1.04)}
+.bio-photo .cap{z-index:2}
+.bio-photo .stamp{position:absolute;z-index:2;right:16px;bottom:12px;font-family:"VT323",ui-monospace,monospace;font-size:24px;letter-spacing:.08em;
+  color:#FF8A3D;text-shadow:0 0 6px rgba(255,90,20,.75),0 0 1px rgba(255,200,150,.9)}

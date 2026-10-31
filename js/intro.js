@@ -30,7 +30,7 @@
   function open(){
     if(opened) return; opened=true; idle.kill();
     const tl=gsap.timeline({onComplete:enter});
-    try{ mus.currentTime=0; mus.volume=.9; mus.play().catch(()=>{}); }catch(e){}
+    try{ mus.currentTime=0; mus.volume=.68; mus.play().catch(()=>{}); }catch(e){}
     tl.to(['#openBtn','.intro-top','.intro-bottom'],{autoAlpha:0,duration:.4},0)
       .to(hF,{rotationX:-100,duration:.8,ease:'power2.inOut'},.1)
       .to(hB,{rotationX:100,duration:.8,ease:'power2.inOut'},.1)
