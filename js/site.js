@@ -16,14 +16,14 @@
   let live=true;
   function parallax(){
     if(!fine) return;
-    const L=wraps.map(w=>({el:w,d:+w.dataset.depth||1,k:90,j:64}));
-    L.push({el:bg,d:1,k:46,j:34});
-    const eb=$('.earbuds'), mw=wrapOf('music'); if(eb&&mw) L.push({el:eb,d:+mw.dataset.depth||1,k:90,j:64}); // провод двигается вместе с плеером
+    const L=wraps.map(w=>({el:w,d:+w.dataset.depth||1,k:42,j:30}));
+    L.push({el:bg,d:1,k:22,j:16});
+    const eb=$('.earbuds'), mw=wrapOf('music'); if(eb&&mw) L.push({el:eb,d:+mw.dataset.depth||1,k:42,j:30}); // провод двигается вместе с плеером
     let tx=0,ty=0,cx=0,cy=0;
     hero.addEventListener('mousemove',e=>{ tx=e.clientX/innerWidth-.5; ty=e.clientY/innerHeight-.5; });
     hero.addEventListener('mouseleave',()=>{ tx=0; ty=0; });
     (function loop(){
-      cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
+      cx+=(tx-cx)*.03; cy+=(ty-cy)*.03;
       L.forEach(o=>o.el.style.translate=(-cx*o.k*o.d).toFixed(2)+'px '+(-cy*o.j*o.d).toFixed(2)+'px');
       requestAnimationFrame(loop);
     })();

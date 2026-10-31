@@ -414,3 +414,20 @@ nav.top .mark{width:46px;height:54px}
 .vclose{right:auto;left:14px}
 @media (max-width:900px){nav.top .mark{width:38px;height:45px}.back{top:31px;left:80px}}
 @media (max-width:760px){.w-poster .lbl,.w-tix .lbl,.w-mp3 .lbl{left:50%;right:auto;top:calc(100% + 2px);bottom:auto;transform:translateX(-50%);text-align:center}}
+
+/* ===== симметричная раскладка главной ===== */
+/* плеер слева на том же отступе, что флешка справа; кассета — как постер */
+.w-mp3{left:8%}
+.w-pend{right:8%}
+.w-vhs{left:10%}
+.w-poster{right:10%}
+/* нижняя группа (билеты, наушники, телефон) — по центру между ними */
+.w-tix{left:calc(50% - var(--k)*23.7)}
+.w-phones{left:calc(50% - var(--k)*2.7)}
+.w-phone{left:calc(50% + var(--k)*16.3)}
+/* наведение — мягкое начало */
+.item{transition:transform 1s cubic-bezier(.45,0,.2,1),filter 1s cubic-bezier(.45,0,.2,1)}
+.it-wrap:hover .float{animation:lev 2.6s cubic-bezier(.45,0,.55,1) infinite alternate}
+@keyframes lev{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+.peek{transition:transform .9s cubic-bezier(.45,0,.2,1),clip-path .9s cubic-bezier(.45,0,.2,1),opacity .5s}
+@media (max-width:760px){.w-tix,.w-phones,.w-phone{left:auto!important}}
