@@ -58,7 +58,7 @@
   const onOpen={}, onClose={};
 
   /* даты / райдер / букинг: предмет и текст — одна группа, ровно по центру страницы и по одной оси */
-  const SIDE={dates:'left',rider:'right',booking:'right'}, PW={dates:[.42,620],rider:[.36,540],booking:[.3,460]};
+  const SIDE={dates:'right',rider:'right',booking:'left'}, PW={dates:[.42,620],rider:[.36,540],booking:[.3,460]};
   function sideLayout(name,panel,r){
     const W=innerWidth,H=innerHeight, pr=$('#panels').getBoundingClientRect(), trc=title.getBoundingClientRect();
     const top=trc.top-H*.075+trc.height*.56+H*.04, bot=H*.95, av=bot-top, yc=top+av/2;
@@ -95,19 +95,18 @@
     tl=gsap.timeline({defaults:{duration:1.15,ease:'power3.inOut'},onComplete:()=>{busy=false; onOpen[name+'Done']&&onOpen[name+'Done'](panel,{x:tx,y:ty})}});
     tl.to(bg,{x:gsap.getProperty(bg,'x')+dx,y:gsap.getProperty(bg,'y')+dy},0);
     if(st){ const eb=$('.earbuds'); gsap.set(eb,{left:st.left,top:st.top,width:st.width,height:st.height}); tl.fromTo(eb,{autoAlpha:0},{autoAlpha:1,duration:.5,ease:'power2.out'},.85); }
-    wraps.forEach(w=>{
-      const gx=gsap.getProperty(w,'x'), gy=gsap.getProperty(w,'y');
-      if(w===wrap){ tl.to(w,{x:gx+dx,y:gy+dy,scale:sc,rotation:rot},0); return; }
-      const b=w.getBoundingClientRect(), L=b.left+dx, T=b.top+dy;
-      let ux=dx,uy=dy;
-      if(name==='rider'){ ux=b.left+b.width/2-W/2; uy=b.top+b.height/2-H/2-H*.35; } // наушники: всё разлетается по лучам от центра и вверх
-      else if(Math.hypot(ux,uy)<60){ ux=L+b.width/2-tx; uy=T+b.height/2-ty; }
-      const l=Math.hypot(ux,uy)||1; ux/=l; uy/=l;
-      const tX=ux>.01?(W-L+60)/ux:ux<-.01?(L+b.width+60)/-ux:1e9;
-      const tY=uy>.01?(H-T+60)/uy:uy<-.01?(T+b.height+60)/-uy:1e9;
-      const t=Math.max(0,Math.min(tX,tY));
-      tl.to(w,{x:gx+dx+ux*t,y:gy+dy+uy*t},0);
+    /* остальные предметы расходятся по лучам ОТ выбранного (гомотетия): расстояния между всеми только растут, никто не касается */
+    const others=wraps.filter(w=>w!==wrap).map(w=>{ const b=w.getBoundingClientRect(); return {w,b,vx:b.left+b.width/2-cx,vy:b.top+b.height/2-cy}; });
+    let f=1.6;
+    others.forEach(o=>{
+      const hw=o.b.width/2+60, hh=o.b.height/2+60, c=[];
+      if(o.vx>1) c.push((W+hw-tx)/o.vx); else if(o.vx<-1) c.push((tx+hw)/-o.vx);
+      if(o.vy>1) c.push((H+hh-ty)/o.vy); else if(o.vy<-1) c.push((ty+hh)/-o.vy);
+      if(c.length) f=Math.max(f,Math.min(...c));
     });
+    f=Math.min(f,14);
+    tl.to(wrap,{x:gsap.getProperty(wrap,'x')+dx,y:gsap.getProperty(wrap,'y')+dy,scale:sc,rotation:rot},0);
+    others.forEach(o=>tl.to(o.w,{x:gsap.getProperty(o.w,'x')+dx+o.vx*(f-1),y:gsap.getProperty(o.w,'y')+dy+o.vy*(f-1)},0));
     tl.to(title,{scale:mob()?.62:.56,y:-H*(mob()?.04:.075),duration:.9},.1)
       .to(mq,{yPercent:115,duration:.6},0)
       .to(back,{autoAlpha:1,duration:.4},.7)

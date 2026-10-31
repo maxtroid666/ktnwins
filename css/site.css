@@ -512,3 +512,11 @@ nav.top .mark{width:46px;height:54px}
 .bio-photo .cap{z-index:2}
 .bio-photo .stamp{position:absolute;z-index:2;right:16px;bottom:12px;font-family:"VT323",ui-monospace,monospace;font-size:24px;letter-spacing:.08em;
   color:#FF8A3D;text-shadow:0 0 6px rgba(255,90,20,.75),0 0 1px rgba(255,200,150,.9)}
+
+/* букинг: текст слева от телефона, выровнен по правому краю (к телефону) */
+@media (min-width:761px){
+  .panels .p-booking .mbody{text-align:right}
+  .panels .p-booking .eyebrow{flex-direction:row-reverse;padding-right:0;padding-left:44px}
+  .panels .p-booking .contacts{justify-items:end}
+  .panels .p-booking .book-foot{justify-content:space-between;flex-direction:row-reverse}
+}

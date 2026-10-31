@@ -22,7 +22,9 @@
   gsap.set(hB,{z:-D/2+12,transformOrigin:'50% 100%'});
 
   // появление + лёгкое покачивание
-  gsap.from(scaler,{y:60,opacity:0,duration:1.4,ease:'power3.out'});
+  // прозрачность — на .stage, не на 3D-слое: opacity<1 на preserve-3d «сплющивает» сумку до плоской
+  gsap.from(scaler,{y:60,duration:1.4,ease:'power3.out'});
+  gsap.from(stage,{opacity:0,duration:1.4,ease:'power2.out'});
   gsap.from(['.intro-top','.intro-bottom','#openBtn'],{opacity:0,y:12,duration:1,delay:.5,stagger:.12});
   const idle=gsap.to(cam,{rotationY:-12,rotationX:-21,duration:3.2,ease:'sine.inOut',yoyo:true,repeat:-1});
 
