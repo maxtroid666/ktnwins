@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KTNWINS — Press Kit</title>
+<meta name="description" content="KTNWINS — DJ. Techno, tribal, electronic and beyond. Music. People. Places. A higher state.">
+<link rel="icon" href="assets/logo/ktn.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500&family=Nothing+You+Could+Do&family=Bad+Script&family=Oswald:wght@700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/logo.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body class="locked">
+
+<!-- ================= ИНТРО: СУМКА ================= -->
+<div id="intro">
+  <div class="intro-top"><span>Music<br>People<br>Places<br><b>A higher state</b></span><span style="text-align:right">Techno<br>Tribal<br>Electronic<br>and beyond</span></div>
+  <div class="stage">
+    <div class="cam" id="cam"><div class="scaler" id="scaler">
+      <div class="bag" id="bag">
+        <div class="shadow"></div>
+        <!-- обивка внутри -->
+        <div class="in in-back lining"></div>
+        <div class="in in-left lining"></div>
+        <div class="in in-right lining"></div>
+        <div class="in in-front lining"></div>
+        <div class="in in-floor lining">
+          <div class="mini vinyl d-vinyl"><img class="ph" src="img/items/mp3.png" alt="" onerror="this.remove()"></div>
+          <div class="mini tix d-ticket"><div class="t1">KTNWINS</div><div class="t2"></div><img class="ph" src="img/items/tickets.png" alt="" onerror="this.remove()"></div>
+          <div class="mini tix2 d-ticket" id="tix2"><div class="t1">KTNWINS</div><div class="t2"></div></div>
+          <div class="mini phone d-phone"><img class="ph" src="img/items/phone.png" alt="" onerror="this.remove()"></div>
+          <div class="mini pend d-pend"><img class="ph" src="img/items/pendant.png" alt="" onerror="this.remove()"></div>
+        </div>
+        <!-- кожа снаружи -->
+        <div class="face f-bottom leather"></div>
+        <div class="face f-back leather stitch"></div>
+        <div class="face f-left leather stitch"></div>
+        <div class="face f-right leather stitch"></div>
+        <div class="face f-front leather stitch"><i class="emboss logo-mask"></i><div class="tag">KTNWINS · EST. 2019</div></div>
+        <div class="handle" id="hBack"></div>
+        <div class="handle" id="hFront"></div>
+        <div class="lid" id="lid">
+          <div class="lid-out leather stitch"></div>
+          <div class="lid-in lining"></div>
+          <div class="flap">
+            <div class="flap-out leather stitch"><div class="plate"><i class="logo-mask"></i></div></div>
+            <div class="flap-in lining"></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+  <button class="hint" id="openBtn" aria-label="Открыть сумку"><span class="s">what's in the bag?</span><span class="p">открыть</span></button>
+  <div class="intro-bottom"><span>Worldwide<br><b>Moscow</b></span><button class="skip" id="skip">пропустить</button></div>
+</div>
+
+<!-- ================= САЙТ ================= -->
+<div id="site">
+  <div class="frame"></div>
+  <nav class="top" id="nav">
+    <span class="mark logo-mask" aria-label="KTNWINS"></span>
+    <ul>
+      <li><button data-open="bio">Био</button></li><li><button data-open="music">Миксы</button></li><li><button data-open="video">Видео</button></li>
+      <li><button data-open="photos">Фото</button></li><li><button data-open="dates">Даты</button></li><li><button data-open="rider">Райдер</button></li><li><button data-open="booking">Букинг</button></li>
+    </ul>
+    <button class="menu-btn" id="menuBtn">меню</button>
+  </nav>
+  <button class="back" id="backBtn" aria-label="Назад"><span>←</span> назад</button>
+
+  <!-- ГЛАВНАЯ: дно сумки, без прокрутки -->
+  <main class="hero" id="top">
+    <div class="board">
+    <div class="hero-bg lining"></div>
+    <img class="earbuds" src="assets/earbuds.png" alt="">
+    <div class="items">
+      <div class="it-wrap w-vhs" data-depth="1.6"><div class="float"><button class="item" data-open="video"><img class="ph" src="img/items/vhs.png" alt="" onerror="this.remove()"><span class="peek">видео с сетов <b>→</b></span><span class="lbl"><small>03 / video</small>видео</span></button></div></div>
+      <div class="it-wrap w-mp3" data-depth="1.9"><div class="float"><button class="item" data-open="music"><img class="ph" src="img/items/mp3.png" alt="" onerror="this.remove()"><span class="mini-scr" id="miniScr"><span class="cyc" id="miniCyc"></span><span class="list" id="plList"></span></span><span class="hot h-c" data-act="play"></span><span class="hot h-l" data-act="prev"></span><span class="hot h-r" data-act="next"></span><span class="hot h-u" data-act="up"></span><span class="hot h-d" data-act="down"></span><span class="peek">5 сетов · плеер <b>→</b></span><span class="lbl"><small>02 / music</small>миксы</span></button></div></div>
+      <div class="it-wrap w-pend" data-depth="1.3"><div class="float"><button class="item d-pend" data-open="bio"><img class="ph" src="img/items/pendant.png" alt="" onerror="this.remove()"><span class="peek">кто такая ktnwins <b>→</b></span><span class="lbl"><small>01 / bio</small>кто она</span></button></div></div>
+      <div class="it-wrap w-poster" data-depth="1.1"><div class="float"><button class="item" data-open="photos"><img class="ph" src="img/items/poster.png" alt="" onerror="this.remove()"><span class="peek">24 фото · полароиды <b>→</b></span><span class="lbl"><small>04 / photos</small>фото</span></button></div></div>
+      <div class="it-wrap w-tix" data-depth=".8"><div class="float"><button class="item d-ticket" data-open="dates"><span class="t1">KTNWINS</span><span class="t2"></span><img class="ph" src="img/items/tickets.png" alt="" onerror="this.remove()"><span class="peek">ближайшие даты <b>→</b></span><span class="lbl"><small>05 / dates</small>где играет</span></button></div></div>
+      <div class="it-wrap w-phones" data-depth="1.5"><div class="float"><button class="item" data-open="rider"><img class="ph" src="img/items/headphones.png" alt="" onerror="this.remove()"><span class="peek">техрайдер <b>→</b></span><span class="lbl"><small>06 / rider</small>райдер</span></button></div></div>
+      <div class="it-wrap w-phone" data-depth=".7"><div class="float"><button class="item d-phone" data-open="booking"><img class="ph" src="img/items/phone.png" alt="" onerror="this.remove()"><span class="peek">букинг и контакты <b>→</b></span><span class="lbl"><small>07 / booking</small>позвать</span></button></div></div>
+    </div>
+    </div>
+    <div class="hero-title">
+      <div class="k">KTNWINS</div>
+      <div class="sub"><span>DJ · Moscow</span><span>Techno / Tribal</span><span>Est. 2019</span></div>
+      <div class="scr">same energy, different place ♡</div>
+    </div>
+    <div class="sign" aria-hidden="true"><i></i></div>
+    <div class="marquee"><div>
+      <span>MUSIC</span><em>·</em><span>PEOPLE</span><em>·</em><span>PLACES</span><em>a higher state</em><span>ENERGY IN SOUND</span><em>·</em><span>KTNWINS</span><em>♡</em>
+      <span>MUSIC</span><em>·</em><span>PEOPLE</span><em>·</em><span>PLACES</span><em>a higher state</em><span>ENERGY IN SOUND</span><em>·</em><span>KTNWINS</span><em>♡</em>
+    </div></div>
+    <div class="panels" id="panels">
+
+    <section class="panel p-bio" data-panel="bio" aria-label="Кто она">
+      <div class="mbody"><div class="bio">
+        <div class="bio-photo"><img id="bioImg" alt="KTNWINS"><span class="cap">good music, better people</span></div>
+        <div class="bio-text">
+          <div class="eyebrow"><span><b>01</b> — Bio</span><span>Даша Катана</span></div>
+          <h2>A HIGHER<br><span class="o">STATE</span></h2>
+          <p>KTNWINS — московский диджей. Техно, трайбл и всё, что лежит дальше жанров: плотный грув, гипнотичные петли и живая перкуссия. Сеты строит как путешествие — от первого трека до момента, когда танцпол дышит в одном ритме.</p>
+          <p>Играет в клубах, на open-air и закрытых событиях. Девиз — «same energy, different place»: одна энергия, где бы ни стоял пульт.</p>
+          <div class="genres"><span>Techno</span><span>Tribal</span><span>Hypnotic</span><span>Electronic</span><span>and beyond</span></div>
+          <div class="stats"><div><b data-count="2019" data-from="1990">2019</b><span>на сцене с</span></div><div><b data-count="120" data-suf="+">120+</b><span>сетов</span></div><div><b data-count="14">14</b><span>городов</span></div></div>
+        </div>
+      </div></div>
+    </section>
+
+    <section class="panel p-music" data-panel="music" aria-label="Миксы">
+      <div class="mbody">
+        <div class="pl" id="pl">
+          <div class="pl-stage">
+            
+          </div>
+          <div class="pl-info" id="plInfo">
+            <div class="row"><span id="iNo"></span><span class="eq"><i></i><i></i><i></i><i></i></span><span class="len" id="iLen"></span></div>
+            <div class="ttl" id="iTtl"></div>
+            <p class="desc" id="iDesc"></p>
+            <div class="ctl">
+              <button data-act="prev" aria-label="Предыдущий"><svg viewBox="0 0 24 24"><path d="M11 6v12L2 12zM21 6v12l-9-6z"/></svg></button>
+              <button data-act="play" class="pp" id="ppBtn" aria-label="Play"></button>
+              <button data-act="next" aria-label="Следующий"><svg viewBox="0 0 24 24"><path d="M13 6v12l9-6zM3 6v12l9-6z"/></svg></button>
+              <span class="t" id="ctT"></span>
+              <div class="prog" id="ctProg"><i id="ctBar"></i></div>
+              <a class="lnk" id="iLnk" href="#" target="_blank" rel="noopener">слушать →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel p-photos" data-panel="photos" aria-label="Фото">
+      <div class="pile" id="pile"></div>
+      <div class="pile-note"><span class="scrip">pick one ♡</span><small>04 / photos</small></div>
+    </section>
+
+    <section class="panel p-video" data-panel="video" aria-label="Видео">
+      <div class="mbody">
+        <div class="eyebrow"><span><b>03</b> — Video</span><span>live &amp; backstage</span></div>
+        <div class="vgrid" id="vgrid"></div>
+        <div class="vbig" id="vbig"><img id="vbImg" alt=""><button class="vplay" id="vplay" aria-label="Смотреть"></button>
+          <div class="vcap"><b id="vbTitle"></b><span>видео скоро ♡</span></div>
+          <button class="vclose" id="vclose" aria-label="Свернуть">✕ свернуть</button></div>
+      </div>
+    </section>
+
+    <section class="panel p-dates" data-panel="dates" aria-label="Даты">
+      <div class="mbody">
+        <div class="eyebrow"><span><b>05</b> — Dates</span><span>one night only</span></div>
+        <h2>ONE NIGHT <span class="o">ONLY</span></h2>
+        <div class="dates">
+          <a class="date" href="#"><div class="d">13.06<small>2026 · СБ</small></div><div class="v">CLUB NAME<small>Doors 23:00</small></div><div class="c">Moscow</div><div class="stub">билеты</div></a>
+          <a class="date" href="#"><div class="d">27.06<small>2026 · СБ</small></div><div class="v">OPEN AIR<small>Sunset set</small></div><div class="c">St. Petersburg</div><div class="stub">билеты</div></a>
+          <a class="date past" href="#"><div class="d">18.04<small>2026</small></div><div class="v">CLUB NAME<small>Closing set</small></div><div class="c">Moscow</div><div class="stub">прошло</div></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel p-rider" data-panel="rider" aria-label="Райдер">
+      <div class="mbody">
+        <div class="eyebrow"><span><b>06</b> — Tech rider</span><span>что нужно для сета</span></div>
+        <div class="rider">
+          <div><h2>TECH<br><span class="o">RIDER</span></h2><p>Если чего-то нет — напишите, найдём вариант. Главное — нормальный мониторинг и чистый звук.</p></div>
+          <div>
+            <h3>Оборудование</h3>
+            <ul><li><span>2× Pioneer CDJ-3000</span><span>link / LAN</span></li><li><span>Pioneer DJM-900NXS2 / V10</span><span>микшер</span></li><li><span>2× мониторы у пульта</span><span>отдельный контроль</span></li><li><span>Стол на уровне пояса</span><span>устойчивый</span></li></ul>
+            <h3 style="margin-top:22px">Гостеприимство</h3>
+            <ul><li><span>Вода, лёд</span><span>на пульте</span></li><li><span>+2 гостя</span><span>в списке</span></li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel p-booking" data-panel="booking" aria-label="Букинг">
+      <div class="mbody">
+        <div class="eyebrow"><span><b>07</b> — Booking</span><span>worldwide</span></div>
+        <h2>LET'S MAKE<br><span class="o">A NIGHT</span></h2>
+        <div class="contacts">
+          <a href="mailto:booking@ktnwins.com"><small>Букинг</small><b>booking@ktnwins.com</b></a>
+          <a href="https://t.me/ktnwins" target="_blank" rel="noopener"><small>Telegram</small><b>@ktnwins</b></a>
+          <a href="https://instagram.com/ktnwins" target="_blank" rel="noopener"><small>Instagram</small><b>@ktnwins</b></a>
+        </div>
+        <div class="book-foot"><span class="scrip">music · people · places ♡</span><div class="sign" aria-hidden="true"><i></i></div></div>
+      </div>
+    </section>
+  </div>
+  </main>
+
+  <!-- ОКНА -->
+  
+</div>
+
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/photos.js"></script>
+<script src="js/tracks.js"></script>
+<script src="js/videos.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/intro.js"></script>
+<script src="js/site.js"></script>
+</body>
+</html>

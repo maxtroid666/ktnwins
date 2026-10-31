@@ -1,0 +1,11 @@
+# исходники и тяжёлые оригиналы — на сайте не нужны
+.DS_Store
+ref/
+img/items/_src/
+/*.png
+/*.jpg
+photo/*.png
+photo/*.jpg
+photo/*.jpeg
+photo/*.webp
+photo/*.heic

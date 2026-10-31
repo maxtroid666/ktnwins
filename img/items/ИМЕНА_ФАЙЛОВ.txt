@@ -1,0 +1,4 @@
+Предметы в сумке (PNG с прозрачным фоном, вид строго сверху):
+vinyl.png  pendant.png  tickets.png  poster.png  headphones.png  phone.png
+Пресс-фото (папка img/press): bio.jpg 01.jpg 02.jpg 03.jpg 04.jpg 05.jpg
+Пока файла нет — на его месте рисуется CSS-версия предмета.
