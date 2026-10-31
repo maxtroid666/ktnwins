@@ -57,6 +57,21 @@
   let state=null, tl=null, busy=false, later=null;
   const onOpen={}, onClose={};
 
+  /* даты / райдер / букинг: предмет и текст — одна группа, ровно по центру страницы и по одной оси */
+  const SIDE={dates:'left',rider:'right',booking:'right'}, PW={dates:[.42,620],rider:[.36,540],booking:[.3,460]};
+  function sideLayout(name,panel,r){
+    const W=innerWidth,H=innerHeight, pr=$('#panels').getBoundingClientRect(), trc=title.getBoundingClientRect();
+    const top=trc.top-H*.075+trc.height*.56+H*.04, bot=H*.95, av=bot-top, yc=top+av/2;
+    const pw=Math.min(W*PW[name][0],PW[name][1]), gap=Math.max(36,W*.035);
+    panel.style.cssText=`left:0;top:0;right:auto;bottom:auto;width:${pw}px;height:auto;max-height:${av}px`;
+    const ph=panel.offsetHeight;
+    let sc=CFG[name][2], iw=r.width*1.06*sc, ih=r.height*1.06*sc;
+    const f=Math.min(1,av*.9/ih,(W*.9-gap-pw)/iw); sc*=f; iw*=f;
+    const x0=(W-(iw+gap+pw))/2;
+    const tx=SIDE[name]==='right'?x0+iw/2:x0+pw+gap+iw/2, pl=SIDE[name]==='right'?x0+iw+gap:x0;
+    panel.style.left=(pl-pr.left)+'px'; panel.style.top=(Math.max(top,yc-ph/2)-pr.top)+'px';
+    return {tx,ty:yc,sc};
+  }
   function open(name){
     if(busy||state===name) return;
     if(state){ close(()=>open(name)); return; }
@@ -73,7 +88,8 @@
       st=panel.querySelector('.pl-stage').getBoundingClientRect();
       tx=st.left+st.width*(.0014+.2801/2); ty=st.top+st.height*(.2284+.7623/2);
       sc=st.height*.7623/(wrap.offsetHeight*.962); rot=14.2; // корпус на картинке ~96% высоты кадра mp3 (наклон 5°)
-    } else { const c=(mob()?MOB:CFG)[name]; tx=c[0]/100*W; ty=c[1]/100*H; sc=c[2]; }
+    } else if(SIDE[name]&&!mob()){ const g=sideLayout(name,panel,r); tx=g.tx; ty=g.ty; sc=g.sc;
+    } else { if(SIDE[name]) panel.style.cssText=''; const c=(mob()?MOB:CFG)[name]; tx=c[0]/100*W; ty=c[1]/100*H; sc=c[2]; }
     const dx=tx-cx, dy=ty-cy;
     hero.classList.add('detail'); window.SFX&&SFX.whoosh(1.25,.45);
     tl=gsap.timeline({defaults:{duration:1.15,ease:'power3.inOut'},onComplete:()=>{busy=false; onOpen[name+'Done']&&onOpen[name+'Done'](panel,{x:tx,y:ty})}});
@@ -115,9 +131,6 @@
   addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
 
   /* букинг: телефон поднимается к надписи — на десктопе подстрочники уступают ему место */
-  const tagline='.hero-title .sub,.hero-title .scr';
-  onOpen.booking=()=>{ if(!mob()) gsap.to(tagline,{autoAlpha:0,duration:.35}); };
-  onClose.booking=()=>gsap.to(tagline,{autoAlpha:1,duration:.4,delay:.35});
 
   /* кто она: числа набегают */
   onOpen.bio=p=>{

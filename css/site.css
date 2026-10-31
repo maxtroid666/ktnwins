@@ -480,3 +480,14 @@ nav.top .mark{width:46px;height:54px}
   .w-pend .item .lbl{font-size:28px}
   .w-phone .item .lbl{font-size:20px}
 }
+
+/* ===== 31.10: даты/райдер/букинг — группа «предмет + текст» по центру (позиция панели считается в js) ===== */
+@media (min-width:761px){
+  .panels .p-dates .mbody,.panels .p-rider .mbody,.panels .p-booking .mbody{width:100%}
+  .panels .p-rider .rider{grid-template-columns:1fr;column-gap:0;row-gap:18px}
+  .panels .p-rider .eyebrow{width:auto}
+  .panels .p-rider .rider>div:first-child{display:block}
+  .panels .p-rider .rider p{margin-top:10px}
+  /* наушники на главной выше — подсказка не прячется под бегущую строку */
+  .w-phones{bottom:calc(3% + var(--mq) + var(--k)*4.5)}
+}
