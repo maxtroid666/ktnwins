@@ -10,20 +10,21 @@
   const wraps=$$('.it-wrap');
   const wrapOf=n=>{const b=$(`.it-wrap .item[data-open="${n}"]`);return b&&b.closest('.it-wrap')};
 
-  $('#menuBtn').addEventListener('click',()=>nav.classList.toggle('open'));
+  const menuBtn=$('#menuBtn');
+  menuBtn.addEventListener('click',()=>menuBtn.setAttribute('aria-expanded',nav.classList.toggle('open')));
 
   /* ---------- параллакс (только поле и предметы, надпись закреплена) ---------- */
   let live=true;
   function parallax(){
     if(!fine) return;
-    const L=wraps.map(w=>({el:w,d:+w.dataset.depth||1,k:42,j:30}));
-    L.push({el:bg,d:1,k:22,j:16});
-    const eb=$('.earbuds'), mw=wrapOf('music'); if(eb&&mw) L.push({el:eb,d:+mw.dataset.depth||1,k:42,j:30}); // провод двигается вместе с плеером
+    const L=wraps.map(w=>({el:w,d:+w.dataset.depth||1,k:16,j:11}));
+    L.push({el:bg,d:1,k:8,j:6});
+    const eb=$('.earbuds'), mw=wrapOf('music'); if(eb&&mw) L.push({el:eb,d:+mw.dataset.depth||1,k:16,j:11}); // провод двигается вместе с плеером
     let tx=0,ty=0,cx=0,cy=0;
     hero.addEventListener('mousemove',e=>{ tx=e.clientX/innerWidth-.5; ty=e.clientY/innerHeight-.5; });
     hero.addEventListener('mouseleave',()=>{ tx=0; ty=0; });
     (function loop(){
-      cx+=(tx-cx)*.03; cy+=(ty-cy)*.03;
+      cx+=(tx-cx)*.025; cy+=(ty-cy)*.025;
       L.forEach(o=>o.el.style.translate=(-cx*o.k*o.d).toFixed(2)+'px '+(-cy*o.j*o.d).toFixed(2)+'px');
       requestAnimationFrame(loop);
     })();
@@ -51,7 +52,7 @@
 
   /* ---------- переход: поле уезжает, предмет встаёт на место ---------- */
   // цель для центра предмета (в % экрана) и масштаб
-  const CFG={bio:[80,60,2.1],rider:[34,52,1.35],video:[20,58,1.3],dates:[20,60,1.4],booking:[79,60,1.7],photos:[50,63,1.25]};
+  const CFG={bio:[80,60,2.1],rider:[50,45,1.2],video:[20,58,1.3],dates:[57,40,1.2],booking:[51,40,1.7],photos:[50,63,1.25]};
   const MOB={bio:[50,27,1.3],rider:[50,26,.75],video:[50,26,.8],dates:[50,26,.8],booking:[50,26,.9],photos:[50,26,.75]};
   let state=null, tl=null, busy=false, later=null;
   const onOpen={}, onClose={};
@@ -60,7 +61,8 @@
     if(busy||state===name) return;
     if(state){ close(()=>open(name)); return; }
     const panel=$(`.panel[data-panel="${name}"]`), wrap=wrapOf(name); if(!panel||!wrap) return;
-    busy=true; state=name; live=false; nav.classList.remove('open');
+    busy=true; state=name; live=false; nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false');
+    wraps.forEach(w=>w.inert=w!==wrap); // улетевшие предметы не ловят Tab
     gsap.killTweensOf([...wraps,bg]);
     const W=innerWidth,H=innerHeight;
     panel.classList.add('on'); gsap.set(panel,{autoAlpha:0,x:0,y:0}); hero.classList.toggle('mus',name==='music');
@@ -82,7 +84,8 @@
       if(w===wrap){ tl.to(w,{x:gx+dx,y:gy+dy,scale:sc,rotation:rot},0); return; }
       const b=w.getBoundingClientRect(), L=b.left+dx, T=b.top+dy;
       let ux=dx,uy=dy;
-      if(Math.hypot(ux,uy)<60){ ux=L+b.width/2-tx; uy=T+b.height/2-ty; }
+      if(name==='rider'){ ux=b.left+b.width/2-W/2; uy=b.top+b.height/2-H/2-H*.35; } // наушники: всё разлетается по лучам от центра и вверх
+      else if(Math.hypot(ux,uy)<60){ ux=L+b.width/2-tx; uy=T+b.height/2-ty; }
       const l=Math.hypot(ux,uy)||1; ux/=l; uy/=l;
       const tX=ux>.01?(W-L+60)/ux:ux<-.01?(L+b.width+60)/-ux:1e9;
       const tY=uy>.01?(H-T+60)/uy:uy<-.01?(T+b.height+60)/-uy:1e9;
@@ -102,7 +105,7 @@
     onClose[name]&&onClose[name](); window.SFX&&SFX.whoosh(1,.38);
     tl.eventCallback('onReverseComplete',()=>{
       const p=$(`.panel[data-panel="${name}"]`); p.classList.remove('on');
-      hero.classList.remove('detail','mus'); state=null; tl=null; busy=false; live=true;
+      hero.classList.remove('detail','mus'); state=null; tl=null; busy=false; live=true; wraps.forEach(w=>w.inert=false);
       if(cb) cb();
     });
     tl.timeScale(1.35).reverse();
@@ -110,6 +113,11 @@
   $$('[data-open]').forEach(b=>b.addEventListener('click',e=>{ if(e.target.closest('[data-act],.ln')) return; window.SFX&&SFX.click(); const n=b.dataset.open; if(state===n&&b.classList.contains('item')) close(); else open(n); }));
   back.addEventListener('click',()=>{ window.SFX&&SFX.click(); close(); });
   addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+
+  /* букинг: телефон поднимается к надписи — на десктопе подстрочники уступают ему место */
+  const tagline='.hero-title .sub,.hero-title .scr';
+  onOpen.booking=()=>{ if(!mob()) gsap.to(tagline,{autoAlpha:0,duration:.35}); };
+  onClose.booking=()=>gsap.to(tagline,{autoAlpha:1,duration:.4,delay:.35});
 
   /* кто она: числа набегают */
   onOpen.bio=p=>{

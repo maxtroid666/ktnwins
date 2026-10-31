@@ -431,3 +431,52 @@ nav.top .mark{width:46px;height:54px}
 @keyframes lev{from{transform:translateY(0)}to{transform:translateY(-14px)}}
 .peek{transition:transform .9s cubic-bezier(.45,0,.2,1),clip-path .9s cubic-bezier(.45,0,.2,1),opacity .5s}
 @media (max-width:760px){.w-tix,.w-phones,.w-phone{left:auto!important}}
+
+/* ===== ещё легче движение и центр нижней группы ===== */
+.w-tix{left:calc(50% - var(--k)*29)}
+.w-phones{left:calc(50% - var(--k)*8)}
+.w-phone{left:calc(50% + var(--k)*11)}
+.item:hover,.item:focus-visible{transform:rotate(var(--r,0deg)) scale(1.025)}
+.it-wrap:hover .float{animation:lev 3s cubic-bezier(.45,0,.55,1) infinite alternate}
+@keyframes lev{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+.mus .w-mp3:hover .float{transform:scale(1.015)}
+@media (max-width:760px){.w-tix,.w-phones,.w-phone{left:auto!important}}
+
+/* ===== направления: билеты — на 1:30 (вверх-вправо), телефон — вверх-влево, наушники — вверх по центру ===== */
+.panels .p-dates{left:5vw;right:52vw;top:30vh;bottom:5vh}
+.panels .p-booking{left:62vw;right:5vw}
+.panels .p-rider{left:5vw;right:5vw}
+.panels .p-rider .rider{grid-template-columns:1fr 1fr;column-gap:34vw}
+@media (max-width:760px){.panels .p-rider .rider{grid-template-columns:1fr;column-gap:0}}
+
+/* ===== аудит 31.10: только раскладка ===== */
+@media (min-width:761px){
+  /* подпись постера — у нижнего края: выше на узких ноутбуках она ложилась на телефон */
+  .w-poster .lbl{top:auto;bottom:-4%;right:calc(100% + var(--k)*1.6)}
+  /* даты: правый край считается от билета (центр 57vw, ширина с наклоном ±11.3k), строки компактнее — в одну линию */
+  .panels .p-dates{right:calc(43vw + var(--k)*11.3 + 16px)}
+  .p-dates .dates{gap:10px}
+  .p-dates .date{grid-template-columns:100px 1fr auto 76px}
+  .p-dates .date>*{padding:12px 14px}
+  .p-dates .date .d{font-size:34px}
+  .p-dates .date .d small{margin-top:4px}
+  .p-dates .date .v{font-size:26px}
+  .p-dates .date .stub{padding:0 6px;letter-spacing:.12em}
+  /* райдер: линия и подпись только над левой колонкой, не через наушники */
+  .p-rider .eyebrow{width:28vw;padding-right:0}
+}
+/* фокус с клавиатуры */
+.item:focus-visible{outline:2px solid var(--ink);outline-offset:6px;border-radius:6px}
+@media (max-width:900px){
+  /* меню начинается под шапкой, кнопка — палец 44px без сдвига шапки */
+  nav.top ul{top:83px}
+  nav.top .menu-btn{padding:16px 12px;margin:-16px -12px}
+}
+@media (max-width:760px){
+  /* в разделах надпись KTNWINS начинается на 114px: «назад» — только стрелка, подпись остаётся в aria-label */
+  .back{left:72px;padding:9px 10px 8px;gap:0;font-size:0}
+  .back::after{content:"";position:absolute;inset:-5px}
+  /* подпись не уменьшается вместе с предметом (scale .6 и .85) */
+  .w-pend .item .lbl{font-size:28px}
+  .w-phone .item .lbl{font-size:20px}
+}
