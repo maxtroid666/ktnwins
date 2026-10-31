@@ -130,7 +130,7 @@
     if(active&&active!==p){ active.classList.remove('top'); gsap.to(active,{scale:1,rotation:+active.dataset.rot,duration:.45,ease:'power2.out'}); }
     active=p; p.classList.add('top'); p.style.zIndex=++topZ;
     const W=pile.clientWidth,H=pile.clientHeight,pw=p.offsetWidth,ph=p.offsetHeight;
-    const x=gsap.utils.clamp(10,W-pw*1.12-10,+gsap.getProperty(p,'x')), y=gsap.utils.clamp(10,H-ph*1.12-10,+gsap.getProperty(p,'y'));
+    const x=gsap.utils.clamp(pw*.12,W-pw*1.18,+gsap.getProperty(p,'x')), y=gsap.utils.clamp(ph*.12,H-ph*1.18,+gsap.getProperty(p,'y'));
     gsap.to(p,{x,y,scale:1.12,rotation:gsap.utils.random(-3,3),duration:.5,ease:'back.out(1.6)'});
   }
   const SLOTS=[[.02,.05],[.17,.44],[.01,.58],[.67,.03],[.83,.34],[.69,.58],[.25,.02]];
@@ -142,7 +142,7 @@
     gsap.set(pols,{opacity:0});
     later=gsap.delayedCall(.95,()=>{
       later=null;
-      const W=pile.clientWidth,H=pile.clientHeight,pw=Math.round(gsap.utils.clamp(140,260,W*.17));
+      const W=pile.clientWidth,H=pile.clientHeight,pw=Math.round(gsap.utils.clamp(120,240,Math.min(W*.16,(H-60)/1.6)));
       pile.style.setProperty('--pw',pw+'px');
       const ph=pw/.9+45, pr=pile.getBoundingClientRect();
       const ox=o.x-pr.left-pw/2, oy=o.y-pr.top-ph/2;
@@ -150,7 +150,7 @@
       const sl=gsap.utils.shuffle(SLOTS.slice());
       pols.forEach((p,i)=>{
         const rot=gsap.utils.random(-16,16); p.dataset.rot=rot; p.style.zIndex=++topZ;
-        const x=gsap.utils.clamp(4,W-pw-4,(sl[i][0]+gsap.utils.random(-.03,.03))*W), y=gsap.utils.clamp(4,H-ph-4,(sl[i][1]+gsap.utils.random(-.03,.03))*H);
+        const m=pw*.2, x=gsap.utils.clamp(m,W-pw-m,(sl[i][0]+gsap.utils.random(-.03,.03))*W), y=gsap.utils.clamp(m,H-ph-m,(sl[i][1]+gsap.utils.random(-.03,.03))*H);
         gsap.fromTo(p,{x:ox,y:oy,rotation:0,scale:.35,opacity:0},{x,y,rotation:rot,scale:1,opacity:1,duration:gsap.utils.random(.8,1.1),delay:i*.06,ease:'power3.out'});
         gsap.delayedCall(i*.06,()=>window.SFX&&SFX.whoosh(.5,.12));
       });

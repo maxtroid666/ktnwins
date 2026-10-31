@@ -391,3 +391,8 @@ nav.top ul button:hover::after{transform:scaleX(1)}
   .vc .play{top:calc(6px + (100% - 30px)/2);width:36px;height:36px;margin:-18px 0 0 -18px}
   .vc .play::after{left:14px;top:11px;border-left-width:11px;border-top-width:7px;border-bottom-width:7px}
 }
+
+/* миксы: плеер компактнее, с воздухом по краям */
+.p-music .pl{top:25vh;width:min(78vw,calc(64vh * 1.541))}
+/* фото: полароиды не вылезают за края */
+.p-photos{top:25vh;bottom:6vh;left:5vw!important;right:5vw!important}
