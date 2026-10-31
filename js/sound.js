@@ -29,5 +29,16 @@ window.SFX=(function(){
     const ng=c.createGain(); ng.gain.setValueAtTime(vol*.6,t); ng.gain.exponentialRampToValueAtTime(.0001,t+.06);
     n.connect(nf).connect(ng).connect(master); n.start(t); n.stop(t+.07);
   }
-  return {whoosh,click};
+  // финальный аккорд: мягкий низкий пэд (ре минор), когда появляется главная
+  function chord(vol=.22){
+    const c=init(); if(!c) return; const t=c.currentTime;
+    const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.setValueAtTime(900,t); lp.frequency.exponentialRampToValueAtTime(260,t+3);
+    const g=c.createGain(); g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.08); g.gain.exponentialRampToValueAtTime(.0001,t+3.2);
+    lp.connect(g).connect(master);
+    [73.42,110,146.83,174.61,220].forEach((f,i)=>{
+      const o=c.createOscillator(); o.type=i%2?'triangle':'sine'; o.frequency.value=f; o.detune.value=(i-2)*3;
+      const og=c.createGain(); og.gain.value=i===0?1:.55; o.connect(og).connect(lp); o.start(t); o.stop(t+3.3);
+    });
+  }
+  return {whoosh,click,chord};
 })();

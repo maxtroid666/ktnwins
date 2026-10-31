@@ -4,6 +4,8 @@
   const intro=$('#intro'), stage=$('.stage'), cam=$('#cam'), scaler=$('#scaler'),
         lid=$('#lid'), hF=$('#hFront'), hB=$('#hBack'), bag=$('#bag');
   const D=200;
+  // музыка на полёт в сумку (assets/audio/intro.mp3)
+  const mus=new Audio('assets/audio/intro.mp3'); mus.preload='auto';
   // картинки предметов: прячем CSS-рисунок под загруженной картинкой
   document.querySelectorAll('.ph').forEach(img=>{
     const ok=()=>{ img.parentElement.classList.add('has-img'); if(img.closest('.tix')){ const t=document.getElementById('tix2'); if(t) t.style.display='none'; } };
@@ -28,7 +30,8 @@
   function open(){
     if(opened) return; opened=true; idle.kill();
     const tl=gsap.timeline({onComplete:enter});
-    if(window.SFX){ SFX.click(.4); SFX.whoosh(2.2,.42); tl.call(()=>SFX.whoosh(1.3,.38),null,2.7); }
+    try{ mus.currentTime=0; mus.volume=.9; mus.play().catch(()=>{}); }catch(e){}
+    window.SFX&&SFX.click(.4);
     tl.to(['#openBtn','.intro-top','.intro-bottom'],{autoAlpha:0,duration:.4},0)
       .to(hF,{rotationX:-100,duration:.8,ease:'power2.inOut'},.1)
       .to(hB,{rotationX:100,duration:.8,ease:'power2.inOut'},.1)
@@ -46,7 +49,7 @@
   }
   // сайт включается ПОД интро (интро ещё непрозрачно), затем интро плавно растворяется — без вспышки
   let shown=false;
-  function show(){ if(shown) return; shown=true; gsap.set('#site',{opacity:1}); window.dispatchEvent(new Event('site:show')); }
+  function show(){ if(shown) return; shown=true; window.SFX&&SFX.chord&&SFX.chord(); gsap.set('#site',{opacity:1}); window.dispatchEvent(new Event('site:show')); }
   function enter(){
     intro.style.display='none';
     document.body.classList.remove('locked');
@@ -55,6 +58,6 @@
   }
   bag.addEventListener('click',open);
   $('#openBtn').addEventListener('click',open);
-  $('#skip').addEventListener('click',()=>{ opened=true; gsap.killTweensOf('*'); show(); gsap.to(intro,{autoAlpha:0,duration:.5,onComplete:enter}); });
+  $('#skip').addEventListener('click',()=>{ opened=true; gsap.killTweensOf('*'); gsap.to(mus,{volume:0,duration:.4,onComplete:()=>mus.pause()}); show(); gsap.to(intro,{autoAlpha:0,duration:.5,onComplete:enter}); });
   addEventListener('keydown',e=>{ if(!opened && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); open(); } });
 })();
