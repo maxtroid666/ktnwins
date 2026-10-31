@@ -215,17 +215,18 @@
     if(vCur) return; vCur=c; window.SFX&&SFX.click(); window.SFX&&SFX.whoosh(.8,.3);
     const v=vList[+c.dataset.i]; $('#vbImg').src=c.querySelector('img').src; $('#vbTitle').textContent=v.title;
     vb.classList.add('on');
-    gsap.fromTo(vb,{...vRect(c),transformOrigin:'0 0',borderRadius:10},{x:0,y:0,scaleX:1,scaleY:1,borderRadius:16,duration:.75,ease:'power3.inOut'});
-    gsap.fromTo(vb.querySelectorAll('.vplay,.vcap,.vclose'),{opacity:0},{opacity:1,duration:.4,delay:.5});
-    gsap.to(vg.querySelectorAll('.vc'),{opacity:0,scale:.85,y:30,duration:.45,stagger:.03,ease:'power2.in'});
+    // большой плеер проявляется прямо в блоке: чуть снизу вверх, превью тают
+    gsap.to(vg.querySelectorAll('.vc'),{opacity:0,y:-10,duration:.35,stagger:.02,ease:'power2.in'});
+    gsap.fromTo(vb,{x:0,scaleX:1,scaleY:1,opacity:0,y:28},{opacity:1,y:0,duration:.6,delay:.18,ease:'power3.out'});
+    gsap.fromTo(vb.querySelectorAll('.vplay,.vcap,.vclose'),{opacity:0},{opacity:1,duration:.4,delay:.45});
   }
   function vClose(instant){
     if(!vCur) return; const c=vCur; vCur=null;
     if(instant){ vb.classList.remove('on'); gsap.set(vg.querySelectorAll('.vc'),{clearProps:'opacity,scale,y'}); return; }
     window.SFX&&SFX.whoosh(.7,.25);
     gsap.to(vb.querySelectorAll('.vplay,.vcap,.vclose'),{opacity:0,duration:.2});
-    gsap.to(vg.querySelectorAll('.vc'),{opacity:1,scale:1,y:0,duration:.55,delay:.25,stagger:.03,ease:'power3.out',clearProps:'opacity,scale,y'});
-    gsap.to(vb,{...vRect(c),duration:.65,ease:'power3.inOut',onComplete:()=>vb.classList.remove('on')});
+    gsap.to(vb,{opacity:0,y:28,duration:.4,ease:'power2.in',onComplete:()=>{ vb.classList.remove('on'); gsap.set(vb,{clearProps:'opacity,y'}); }});
+    gsap.to(vg.querySelectorAll('.vc'),{opacity:1,y:0,duration:.5,delay:.25,stagger:.03,ease:'power3.out',clearProps:'opacity,scale,y'});
   }
   onOpen.video=()=>{ if(!vg.children.length) vBuild(); vClose(true); };
   onClose.video=()=>{ if(vCur) gsap.to(vb,{opacity:0,duration:.3,onComplete:()=>{vClose(true);gsap.set(vb,{opacity:1})}}); };
