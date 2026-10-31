@@ -396,3 +396,21 @@ nav.top ul button:hover::after{transform:scaleX(1)}
 .p-music .pl{top:25vh;width:min(78vw,calc(64vh * 1.541))}
 /* фото: полароиды не вылезают за края */
 .p-photos{top:25vh;bottom:6vh;left:5vw!important;right:5vw!important}
+
+/* ===== правки 31.10 вечер ===== */
+/* подписи предметов */
+.w-poster .lbl{left:auto;right:calc(100% + 12px);bottom:auto;top:18%;transform:none;text-align:right}
+.w-tix .lbl{left:auto;right:calc(100% + 12px);bottom:auto;top:26%;transform:none;text-align:right}
+.w-mp3 .lbl{left:calc(100% + 14px);right:auto;bottom:auto;top:28%;transform:none;text-align:left}
+/* позиции */
+.w-phone{bottom:calc(20% + var(--mq))}
+.w-vhs{left:10%}
+.w-mp3{left:15%}
+/* логотип крупнее, кнопки выровнены по нему */
+nav.top .mark{width:46px;height:54px}
+.back{top:40px;left:104px}
+/* видео: отступ от линии сверху, «свернуть» слева — ближе к кассете */
+.vbig{inset:46px 0 0 0}
+.vclose{right:auto;left:14px}
+@media (max-width:900px){nav.top .mark{width:38px;height:45px}.back{top:31px;left:80px}}
+@media (max-width:760px){.w-poster .lbl,.w-tix .lbl,.w-mp3 .lbl{left:50%;right:auto;top:calc(100% + 2px);bottom:auto;transform:translateX(-50%);text-align:center}}

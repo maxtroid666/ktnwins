@@ -16,14 +16,17 @@
   let live=true;
   function parallax(){
     if(!fine) return;
-    const P=wraps.map(w=>({d:+w.dataset.depth||1,x:gsap.quickTo(w,'x',{duration:1,ease:'power3.out'}),y:gsap.quickTo(w,'y',{duration:1,ease:'power3.out'})}));
-    const bx=gsap.quickTo(bg,'x',{duration:1.5,ease:'power3.out'}), by=gsap.quickTo(bg,'y',{duration:1.5,ease:'power3.out'});
-    hero.addEventListener('mousemove',e=>{
-      if(!live) return;
-      const nx=e.clientX/innerWidth-.5, ny=e.clientY/innerHeight-.5;
-      P.forEach(o=>{o.x(-nx*90*o.d);o.y(-ny*64*o.d)}); bx(-nx*46); by(-ny*34);
-    });
-    hero.addEventListener('mouseleave',()=>{ if(!live) return; P.forEach(o=>{o.x(0);o.y(0)}); bx(0); by(0); });
+    const L=wraps.map(w=>({el:w,d:+w.dataset.depth||1,k:90,j:64}));
+    L.push({el:bg,d:1,k:46,j:34});
+    const eb=$('.earbuds'), mw=wrapOf('music'); if(eb&&mw) L.push({el:eb,d:+mw.dataset.depth||1,k:90,j:64}); // провод двигается вместе с плеером
+    let tx=0,ty=0,cx=0,cy=0;
+    hero.addEventListener('mousemove',e=>{ tx=e.clientX/innerWidth-.5; ty=e.clientY/innerHeight-.5; });
+    hero.addEventListener('mouseleave',()=>{ tx=0; ty=0; });
+    (function loop(){
+      cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
+      L.forEach(o=>o.el.style.translate=(-cx*o.k*o.d).toFixed(2)+'px '+(-cy*o.j*o.d).toFixed(2)+'px');
+      requestAnimationFrame(loop);
+    })();
   }
   function miniScreen(){
     const el=$('#miniCyc'); if(!el||!TR.length) return;
@@ -61,7 +64,8 @@
     gsap.killTweensOf([...wraps,bg]);
     const W=innerWidth,H=innerHeight;
     panel.classList.add('on'); gsap.set(panel,{autoAlpha:0,x:0,y:0}); hero.classList.toggle('mus',name==='music');
-    const r=wrap.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    const r=wrap.getBoundingClientRect(), pt=(wrap.style.translate||'0px 0px').split(' ').map(parseFloat);
+    const cx=r.left+r.width/2-(pt[0]||0), cy=r.top+r.height/2-(pt[1]||0); // без параллакса: дальше он добавится и к предмету, и к проводу одинаково
     let tx,ty,sc,rot=0,st=null;
     if(name==='music'){
       st=panel.querySelector('.pl-stage').getBoundingClientRect();

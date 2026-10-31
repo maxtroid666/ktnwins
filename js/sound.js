@@ -20,14 +20,15 @@ window.SFX=(function(){
     const g=c.createGain(); g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+dur*.42); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
     s.connect(f).connect(g).connect(master); s.start(t); s.stop(t+dur+.05);
   }
+  // нажатие: быстрый низкий «вдох» — нарастает и затихает, без щелчка
   function click(vol=.5){
     const c=init(); if(!c) return; const t=c.currentTime;
-    const o=c.createOscillator(); o.type='sine'; o.frequency.setValueAtTime(130,t); o.frequency.exponentialRampToValueAtTime(52,t+.12);
-    const g=c.createGain(); g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.006); g.gain.exponentialRampToValueAtTime(.0001,t+.17);
-    o.connect(g).connect(master); o.start(t); o.stop(t+.2);
-    const n=c.createBufferSource(); n.buffer=noise; const nf=c.createBiquadFilter(); nf.type='lowpass'; nf.frequency.value=260;
-    const ng=c.createGain(); ng.gain.setValueAtTime(vol*.6,t); ng.gain.exponentialRampToValueAtTime(.0001,t+.06);
-    n.connect(nf).connect(ng).connect(master); n.start(t); n.stop(t+.07);
+    const o=c.createOscillator(); o.type='sine'; o.frequency.setValueAtTime(70,t); o.frequency.linearRampToValueAtTime(96,t+.05); o.frequency.exponentialRampToValueAtTime(58,t+.2);
+    const g=c.createGain(); g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol*.8,t+.045); g.gain.exponentialRampToValueAtTime(.0001,t+.22);
+    o.connect(g).connect(master); o.start(t); o.stop(t+.25);
+    const n=c.createBufferSource(); n.buffer=noise; const nf=c.createBiquadFilter(); nf.type='lowpass'; nf.frequency.setValueAtTime(140,t); nf.frequency.linearRampToValueAtTime(320,t+.05); nf.frequency.exponentialRampToValueAtTime(120,t+.2);
+    const ng=c.createGain(); ng.gain.setValueAtTime(.0001,t); ng.gain.linearRampToValueAtTime(vol*.7,t+.05); ng.gain.exponentialRampToValueAtTime(.0001,t+.22);
+    n.connect(nf).connect(ng).connect(master); n.start(t); n.stop(t+.25);
   }
   // финальный аккорд: мягкий низкий пэд (ре минор), когда появляется главная
   function chord(vol=.22){
